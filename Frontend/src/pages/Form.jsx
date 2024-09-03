@@ -15,8 +15,10 @@ const Form = () => {
         }}
       ></div>
       <div className="relative bg-opacity-80 p-8 mt-4 max-w-3xl w-full">
-        <h1 className="text-3xl font-bold mb-2">Interview Questionnaire</h1>
-        <p className="mb-14">Your Story, Our Insight: Empowering Success through Interviews</p>
+        <h1 className="text-3xl font-bold mb-2">Interview Questionnair</h1>
+        <p className="mb-14">
+          Your Story, Our Insight: Empowering Success through Interviews
+        </p>
         <h2 className="my-14 font-semibold text-xl">Candidate Details:</h2>
         <CandidateDetails />
         <div className="my-9">
@@ -27,7 +29,8 @@ const Form = () => {
         </div>
         <div className="mt-8">
           <p className="mb-4 font-semibold">
-            Did the concerned department take any course of action against your reported complaints?
+            Did the concerned department take any course of action against your
+            reported complaints?
           </p>
           <div className="p-4">
             <div className="flex items-center mb-2">
@@ -65,7 +68,8 @@ const Form = () => {
           </div>
           <div className="my-4">
             <p className="mb-4 font-semibold">
-              Have you collected your total compensation and this month’s salary from the accounts department?
+              Have you collected your total compensation and this month’s salary
+              from the accounts department?
             </p>
             <div className="p-4">
               <div className="flex items-center mb-2">
