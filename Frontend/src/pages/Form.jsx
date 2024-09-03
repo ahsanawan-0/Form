@@ -1,10 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import backgroundImage from "../Assets/background.png";
 import FeedbackSection from "../Components/FeedbackSection";
 import DateField from "../Components/DateField";
 import CandidateDetails from "../Components/CandidateDetails";
 
 const Form = () => {
+  // State to track which radio button is selected
+  const [actionTaken, setActionTaken] = useState("");
+
+  // Handler for radio button change
+  const handleActionChange = (event) => {
+    setActionTaken(event.target.value);
+  };
+
   return (
     <div className="relative flex items-center justify-center min-h-screen bg-[#F1FBFD]">
       <div
@@ -15,7 +23,7 @@ const Form = () => {
         }}
       ></div>
       <div className="relative bg-opacity-80 p-8 mt-4 max-w-3xl w-full">
-        <h1 className="text-3xl font-bold mb-2">Interview Questionnair</h1>
+        <h1 className="text-3xl font-bold mb-2">Interview Questionnaire</h1>
         <p className="mb-14">
           Your Story, Our Insight: Empowering Success through Interviews
         </p>
@@ -40,6 +48,8 @@ const Form = () => {
                 name="action"
                 value="yes"
                 className="form-radio text-blue-600"
+                checked={actionTaken === "yes"}
+                onChange={handleActionChange}
               />
               <label htmlFor="yes-action" className="ml-2">
                 Yes
@@ -52,20 +62,24 @@ const Form = () => {
                 name="action"
                 value="no"
                 className="form-radio text-red-600"
+                checked={actionTaken === "no"}
+                onChange={handleActionChange}
               />
               <label htmlFor="no-action" className="ml-2">
                 No (Please mention the cause below)
               </label>
             </div>
           </div>
-          <div className="my-4">
-            <p className="mb-2">Cause:</p>
-            <textarea
-              name="cause"
-              id="cause"
-              className="w-[94%] h-40 resize-none border-gray-300 rounded-md"
-            ></textarea>
-          </div>
+          {actionTaken === "no" && (
+            <div className="my-4">
+              <p className="mb-2">Cause:</p>
+              <textarea
+                name="cause"
+                id="cause"
+                className="w-[94%] h-40 resize-none border-gray-300 rounded-md"
+              ></textarea>
+            </div>
+          )}
           <div className="my-4">
             <p className="mb-4 font-semibold">
               Have you collected your total compensation and this month’s salary
