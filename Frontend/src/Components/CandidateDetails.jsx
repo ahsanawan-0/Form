@@ -7,7 +7,7 @@ const CandidateDetails = () => {
   const [designation, setDesignation] = useState("");
 
   return (
-      <form className="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <form className="grid grid-cols-1 gap-4 md:grid-cols-2 overflow-hidden">
         <div>
           <label htmlFor="candidateName" className="block text-sm font-medium text-black">
             Name of the Candidate
