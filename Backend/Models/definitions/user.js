@@ -36,6 +36,16 @@ const userSchema = new Schema({
     required: function () {
       return this.primaryReasonForLeaving === "Other (please specify below)";
     },
+    // Custom validation to allow empty string
+    validate: {
+      validator: function (v) {
+        return (
+          this.primaryReasonForLeaving !== "Other (please specify below)" ||
+          v.length > 0
+        );
+      },
+      message: "Other primary reason cannot be empty if 'Other' is selected.",
+    },
   },
   experienceDescription: {
     type: String,
@@ -49,7 +59,7 @@ const userSchema = new Schema({
   },
   firstRadioQuestion: {
     type: String,
-    enum: ["Yes", "No (Please mention the cause below)"],
+    enum: ["Yes", "No"],
     required: true,
   },
   secondRadioQuestion: {
@@ -60,7 +70,14 @@ const userSchema = new Schema({
   cause: {
     type: String,
     required: function () {
-      return this.firstRadioQuestion === "No (Please mention the cause below)";
+      return this.firstRadioQuestion === "No";
+    },
+    // Custom validation to allow empty string
+    validate: {
+      validator: function (v) {
+        return this.firstRadioQuestion !== "No" || v.length > 0;
+      },
+      message: "Cause cannot be empty if 'No' is selected.",
     },
   },
   anyRemarks: {

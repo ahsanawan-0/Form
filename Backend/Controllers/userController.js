@@ -25,9 +25,7 @@ const userSchema = Joi.object({
   mainIssuesEncountered: Joi.string()
     .valid("Lack of Official Coordination", "Misbehavior of Staff")
     .required(),
-  firstRadioQuestion: Joi.string()
-    .valid("Yes", "No (Please mention the cause below)")
-    .required(),
+  firstRadioQuestion: Joi.string().valid("Yes", "No").required(),
   secondRadioQuestion: Joi.string().valid("Yes", "No").required(),
   cause: Joi.string().optional().when("firstRadioQuestion", {
     is: "No (Please mention the cause below)",
@@ -41,6 +39,7 @@ module.exports = {
   createCandidateDetails: async (req, res) => {
     try {
       const validateData = await userSchema.validateAsync(req.body);
+      console.log(validateData);
       const candidateDetails = await userModel.createCandidateDetails(
         validateData
       );
