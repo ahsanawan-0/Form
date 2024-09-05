@@ -1,6 +1,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+const generateGuestUserID = () => {
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  let guestUserID = "";
+  for (let i = 0; i < 4; i++) {
+    guestUserID += characters.charAt(
+      Math.floor(Math.random() * characters.length)
+    );
+  }
+  return guestUserID;
+};
+
 const userSchema = new Schema({
   candidateName: {
     type: String,
@@ -36,7 +47,6 @@ const userSchema = new Schema({
     required: function () {
       return this.primaryReasonForLeaving === "Other (please specify below)";
     },
-    // Custom validation to allow empty string
     validate: {
       validator: function (v) {
         return (
@@ -72,7 +82,6 @@ const userSchema = new Schema({
     required: function () {
       return this.firstRadioQuestion === "No";
     },
-    // Custom validation to allow empty string
     validate: {
       validator: function (v) {
         return this.firstRadioQuestion !== "No" || v.length > 0;
@@ -82,6 +91,13 @@ const userSchema = new Schema({
   },
   anyRemarks: {
     type: String,
+  },
+  guestUserID: {
+    type: String,
+    default: function () {
+      return generateGuestUserID();
+    },
+    unique: true,
   },
 });
 
