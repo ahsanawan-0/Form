@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import InputField from "./InputField"; // Assuming you have InputField in the same directory
+import InputField from "./InputField";
 
 const CandidateDetails = ({
   candidateName,

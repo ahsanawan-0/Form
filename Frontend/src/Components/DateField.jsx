@@ -69,15 +69,17 @@ const DateField = ({ startDate, setStartDate, endDate, setEndDate }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto overflow-hidden">
+    <div className="max-w-3xl mx-auto overflow-visible">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div
           className={`col-span-1 ${
             !isDateStartedValid ? "bg-red-100 p-2 rounded" : ""
           }`}
         >
-          <label className="block font-semibold mb-2">Date Started</label>
-          <div className="relative">
+          <label className="block font-semibold mb-2 text-sm md:text-base">
+            Date Started
+          </label>
+          <div className="relative z-50">
             <DatePicker
               selected={startDate}
               onChange={handleStartDateChange}
@@ -91,18 +93,18 @@ const DateField = ({ startDate, setStartDate, endDate, setEndDate }) => {
               maxDate={moment.tz("2024-12-31", userTimeZone).toDate()}
               placeholderText="MM-DD-YYYY"
               dateFormat="MM-dd-yyyy"
-              className={`md:w-80 w-72 px-4 py-2 border placeholder-blue-400 uppercase ${
+              className={`w-full md:w-80 px-4 py-2 border placeholder-blue-400 uppercase ${
                 !isDateStartedValid ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
               ref={dateStartedRef}
             />
             <TbCalendarCheck
-              className="absolute top-1/2 right-10 text-xl transform -translate-y-1/2 text-black cursor-pointer"
+              className="absolute top-1/2 right-4 md:right-10 text-xl transform -translate-y-1/2 text-black cursor-pointer hidden md:block"
               onClick={() => dateStartedRef.current.setFocus()} // Focus the DatePicker input when icon is clicked
             />
           </div>
           {!isDateStartedValid && (
-            <div className="mt-1 text-red-600 text-sm flex items-center">
+            <div className="mt-1 text-red-600 text-xs md:text-sm flex items-center">
               <AiOutlineWarning className="mr-1" />
               <span>
                 This date is not valid. Ensure the year is four digits, the date
@@ -117,8 +119,10 @@ const DateField = ({ startDate, setStartDate, endDate, setEndDate }) => {
             !isDateExitedValid ? "bg-red-100 p-2 rounded" : ""
           }`}
         >
-          <label className="block font-semibold mb-2">Date of Exiting</label>
-          <div className="relative">
+          <label className="block font-semibold mb-2 text-sm md:text-base">
+            Date of Exiting
+          </label>
+          <div className="relative z-50">
             <DatePicker
               selected={endDate}
               onChange={handleEndDateChange}
@@ -134,19 +138,19 @@ const DateField = ({ startDate, setStartDate, endDate, setEndDate }) => {
               maxDate={moment.tz("2024-12-31", userTimeZone).toDate()}
               placeholderText="MM-DD-YYYY"
               dateFormat="MM-dd-yyyy"
-              className={`md:w-80 w-72 px-4 py-2 border placeholder-blue-400 uppercase ${
+              className={`w-full md:w-80 px-4 py-2 border placeholder-blue-400 uppercase ${
                 !isDateExitedValid ? "border-red-500" : "border-gray-300"
               } rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500`}
               ref={dateExitedRef}
               disabled={!startDate}
             />
             <TbCalendarCheck
-              className="absolute top-1/2 right-10 text-xl transform -translate-y-1/2 text-black cursor-pointer"
+              className="absolute top-1/2 right-4 md:right-10 text-xl transform -translate-y-1/2 text-black cursor-pointer hidden md:block"
               onClick={() => dateExitedRef.current.setFocus()} // Focus the DatePicker input when icon is clicked
             />
           </div>
           {!isDateExitedValid && (
-            <div className="mt-1 text-red-600 text-sm flex items-center">
+            <div className="mt-1 text-red-600 text-xs md:text-sm flex items-center">
               <AiOutlineWarning className="mr-1" />
               <span>
                 This date is not valid. Ensure the date is after the Date

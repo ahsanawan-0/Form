@@ -4,6 +4,7 @@ import backgroundImage from "../Assets/background.png";
 import FeedbackSection from "../Components/FeedbackSection";
 import DateField from "../Components/DateField";
 import CandidateDetails from "../Components/CandidateDetails";
+import moment from "moment-timezone";
 
 const Form = () => {
   // State to track form field values
@@ -72,13 +73,25 @@ const Form = () => {
       return;
     }
 
+    const convertToUTCStartOfDay = (date) => {
+      if (!date) return null;
+      console.log("Original Start Date:", date); // Log the original date
+      const formattedDate = moment(date).startOf("day").utc().format(); // Format as ISO string with start of the day
+      console.log("Formatted Start Date:", formattedDate); // Log the formatted date
+      return formattedDate;
+    };
+
+    const convertToUTCEndOfDay = (date) => {
+      if (!date) return null;
+      return moment(date).endOf("day").utc().format(); // Format as ISO string with end of the day
+    };
     // Create form data object
     const formData = {
       candidateName,
       department,
       designation,
-      dateStarted: startDate,
-      dateExited: endDate,
+      dateStarted: convertToUTCStartOfDay(startDate),
+      dateExited: convertToUTCEndOfDay(endDate),
       primaryReasonForLeaving,
       otherPrimaryReason:
         primaryReasonForLeaving === "Other (please specify below)"
@@ -278,7 +291,7 @@ const Form = () => {
             <button
               className={`mt-8 w-1/3 py-2 px-4 font-bold text-white rounded ${
                 isFormValid
-                  ? "bg-[#20264b] hover:bg-[#434fa1]"
+                  ? "bg-[#20264b] hover:bg-[#20264b]"
                   : " bg-[#343D6D] cursor-not-allowed"
               }`}
               onClick={handleSubmit}
