@@ -1,125 +1,119 @@
-import React, { useState } from "react";
+import React from "react";
 
-const TextAreas = () => {
-  // State to track the selected options and cause/remarks
-  const [actionTaken, setActionTaken] = useState("");
-  const [cause, setCause] = useState("");
-  const [compensationCollected, setCompensationCollected] = useState("");
-  const [remarks, setRemarks] = useState("");
+const TextAreas = ({
 
-  // Handlers for radio button and textarea changes
+    actionTaken,
+    setActionTaken,
+    cause,
+    setCause,
+    compensationCollected,
+    setCompensationCollected,
+    anyRemarks,
+    setAnyRemarks
+}
+) => {
+  // Handler for radio button change
   const handleActionChange = (event) => {
     setActionTaken(event.target.value);
   };
-
-  const handleCauseChange = (event) => {
-    setCause(event.target.value);
-  };
-
-  const handleCompensationChange = (event) => {
-    setCompensationCollected(event.target.value);
-  };
-
-  const handleRemarksChange = (event) => {
-    setRemarks(event.target.value);
-  };
-
   return (
-    <div className="mt-8">
-      <p className="mb-4 font-semibold">
-        Did the concerned department take any course of action against your
-        reported complaints?
-      </p>
-      <div className="p-4">
-        <div className="flex items-center mb-2">
-          <input
-            type="radio"
-            id="yes-action"
-            name="action"
-            value="yes"
-            className="form-radio text-blue-600"
-            checked={actionTaken === "yes"}
-            onChange={handleActionChange}
-          />
-          <label htmlFor="yes-action" className="ml-2">
-            Yes
-          </label>
-        </div>
-        <div className="flex items-center">
-          <input
-            type="radio"
-            id="no-action"
-            name="action"
-            value="no"
-            className="form-radio text-red-600"
-            checked={actionTaken === "no"}
-            onChange={handleActionChange}
-          />
-          <label htmlFor="no-action" className="ml-2">
-            No (Please mention the cause below)
-          </label>
-        </div>
-      </div>
-
-      {actionTaken === "no" && (
-        <div className="my-4">
-          <p className="mb-2">Cause:</p>
-          <textarea
-            name="cause"
-            id="cause"
-            value={cause}
-            onChange={handleCauseChange}
-            className="w-full h-40 resize-none border-gray-300 rounded-md"
-          ></textarea>
-        </div>
-      )}
-
-      <div className="my-4">
+    <div>
+      <div className="mt-8">
         <p className="mb-4 font-semibold">
-          Have you collected your total compensation and this month’s salary
-          from the accounts department?
+          Did the concerned department take any course of action against your
+          reported complaints?
         </p>
         <div className="p-4">
           <div className="flex items-center mb-2">
             <input
               type="radio"
-              id="yes-compensation"
-              name="compensation"
-              value="yes"
+              id="yes-action"
+              name="action"
+              value="Yes"
               className="form-radio text-blue-600"
-              checked={compensationCollected === "yes"}
-              onChange={handleCompensationChange}
+              checked={actionTaken === "Yes"}
+              onChange={handleActionChange}
             />
-            <label htmlFor="yes-compensation" className="ml-2">
+            <label htmlFor="yes-action" className="ml-2">
               Yes
             </label>
           </div>
           <div className="flex items-center">
             <input
               type="radio"
-              id="no-compensation"
-              name="compensation"
-              value="no"
+              id="no-action"
+              name="action"
+              value="No"
               className="form-radio text-red-600"
-              checked={compensationCollected === "no"}
-              onChange={handleCompensationChange}
+              checked={actionTaken === "No"}
+              onChange={handleActionChange}
             />
-            <label htmlFor="no-compensation" className="ml-2">
-              No
+            <label htmlFor="no-action" className="ml-2">
+              No (Please mention the cause below)
             </label>
           </div>
         </div>
-      </div>
+        {actionTaken === "No" && (
+          <div className="my-4">
+            <p className="mb-2">Cause:</p>
+            <textarea
+              name="cause"
+              id="cause"
+              value={cause}
+              maxlength="250"
+              onChange={(e) => setCause(e.target.value)}
+              className="w-[100%] h-40  p-2 resize-none border-gray-300 rounded-md"
+            ></textarea>
+          </div>
+        )}
+        <div className="my-4">
+          <p className="mb-4 font-semibold">
+            Have you collected your total compensation and this month’s salary
+            from the accounts department?
+          </p>
+          <div className="p-4">
+            <div className="flex items-center mb-2">
+              <input
+                type="radio"
+                id="yes-compensation"
+                name="compensation"
+                value="Yes"
+                className="form-radio text-blue-600"
+                checked={compensationCollected === "Yes"}
+                onChange={(e) => setCompensationCollected(e.target.value)}
+              />
+              <label htmlFor="yes-compensation" className="ml-2">
+                Yes
+              </label>
+            </div>
+            <div className="flex items-center">
+              <input
+                type="radio"
+                id="no-compensation"
+                name="compensation"
+                value="No"
+                className="form-radio text-red-600"
+                checked={compensationCollected === "No"}
+                onChange={(e) => setCompensationCollected(e.target.value)}
+              />
+              <label htmlFor="no-compensation" className="ml-2">
+                No
+              </label>
+            </div>
+          </div>
+        </div>
+        <div className="my-4">
+          <p className="mb-2">Any Remarks:</p>
+          <textarea
+            name="remarks"
+            id="remarks"
+            maxlength="250"
 
-      <div className="my-4">
-        <p className="mb-2">Any Remarks:</p>
-        <textarea
-          name="remarks"
-          id="remarks"
-          value={remarks}
-          onChange={handleRemarksChange}
-          className="w-full h-40 resize-none border-gray-300 rounded-md"
-        ></textarea>
+            value={anyRemarks}
+            onChange={(e) => setAnyRemarks(e.target.value)}
+            className="w-[100%] h-40  p-2 resize-none border-gray-300 rounded-md"
+          ></textarea>
+        </div>
       </div>
     </div>
   );

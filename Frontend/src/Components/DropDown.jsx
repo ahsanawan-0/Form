@@ -25,11 +25,7 @@ const DropDown = ({
       >
         {/* Render each option dynamically */}
         {options.map((option, index) => (
-          <option
-            key={index}
-            value={option.value}
-            className="text-gray-500"
-          >
+          <option key={index} value={option.value} className="text-gray-500">
             {option.label}
           </option>
         ))}

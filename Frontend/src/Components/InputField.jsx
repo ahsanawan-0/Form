@@ -6,15 +6,8 @@ const InputField = ({
   value = "",
   onChange,
   className = "",
-  disabled = false,
-  readOnly = false,
-  id,
   name,
-  autoComplete,
-  required = false,
   maxLength,
-  minLength,
-  pattern,
 }) => {
   return (
     <input
@@ -24,15 +17,8 @@ const InputField = ({
       onChange={onChange}
       className={`border border-gray-300 rounded-lg py-2 px-4 focus:outline-none focus:ring-2 focus:border-blur 
       hover:border-gray-500 hover:shadow-md ${className}`}
-      disabled={disabled}
-      readOnly={readOnly}
-      id={id}
       name={name}
-      autoComplete={autoComplete}
-      required={required}
       maxLength={maxLength}
-      minLength={minLength}
-      pattern={pattern}
     />
   );
 };
