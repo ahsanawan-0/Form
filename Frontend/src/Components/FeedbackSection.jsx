@@ -50,6 +50,7 @@ const FeedbackSection = ({
           </label>
           <textarea
             id="otherPrimaryReason"
+            maxlength="50"
             value={otherPrimaryReason}
             onChange={(e) => setOtherPrimaryReason(e.target.value)}
             className="border border-gray-300 rounded-lg py-2 px-4 h-40 resize-none w-full"

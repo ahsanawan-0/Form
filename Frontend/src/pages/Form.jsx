@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
-import axios from "axios"; // Import axios for making HTTP requests
+import axios from "axios";
 import backgroundImage from "../Assets/background.png";
 import FeedbackSection from "../Components/FeedbackSection";
 import DateField from "../Components/DateField";
 import CandidateDetails from "../Components/CandidateDetails";
 import moment from "moment-timezone";
+import TextAreas from "../Components/TextAreas";
+import { toast } from "react-toastify"; // Import toast and container
+import "react-toastify/dist/ReactToastify.css"; // Import the CSS for toast notifications
+import MyLoader from "../Components/MyLoader";
 
 const Form = () => {
   // State to track form field values
@@ -22,6 +26,7 @@ const Form = () => {
   const [compensationCollected, setCompensationCollected] = useState("");
   const [anyRemarks, setAnyRemarks] = useState("");
   const [isFormValid, setIsFormValid] = useState(false);
+  const [loading, setLoading] = useState(false); // Loader state
 
   // Validation function to check if all required fields are filled
   const validateForm = () => {
@@ -68,29 +73,23 @@ const Form = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if (!isFormValid) {
-      alert("Please fill out all required fields.");
-      return;
-    }
+    setLoading(true); // Start loading
 
-    const convertToUTCStartOfDay = (date) => {
-      if (!date) return null;
-      console.log("Original Start Date:", date); // Log the original date
-      const formattedDate = moment(date).startOf("day").utc().format(); // Format as ISO string with start of the day
-      console.log("Formatted Start Date:", formattedDate); // Log the formatted date
-      return formattedDate;
-    };
+    // const convertToUTCStartOfDay = (date) => {
+    //   if (!date) return null;
+    //   return moment(date).startOf("day").utc().format();
+    // };
 
     const convertToUTCEndOfDay = (date) => {
       if (!date) return null;
-      return moment(date).endOf("day").utc().format(); // Format as ISO string with end of the day
+      return moment(date).endOf("day").utc().format();
     };
-    // Create form data object
+
     const formData = {
       candidateName,
       department,
       designation,
-      dateStarted: convertToUTCStartOfDay(startDate),
+      dateStarted: startDate,
       dateExited: convertToUTCEndOfDay(endDate),
       primaryReasonForLeaving,
       otherPrimaryReason:
@@ -105,9 +104,6 @@ const Form = () => {
       anyRemarks,
     };
 
-    // Log form data to check
-    console.log("Form Data:", formData);
-
     try {
       const response = await axios.post(
         "http://localhost:3000/create/CreateCandidateDetails",
@@ -115,12 +111,8 @@ const Form = () => {
         { headers: { "Content-Type": "application/json" } }
       );
 
-      console.log("Response:", response.data);
-
       if (response.status === 200) {
-        alert("Form submitted successfully!");
-
-        // Clear form fields by resetting state variables
+        toast.success("Form submitted successfully!");
         setCandidateName("");
         setDepartment("");
         setDesignation("");
@@ -135,31 +127,31 @@ const Form = () => {
         setCompensationCollected("");
         setAnyRemarks("");
       } else {
-        alert("Form submission failed. Please try again.");
+        toast.error("Form submission failed. Please try again.");
       }
     } catch (error) {
-      console.error(
-        "Error submitting the form:",
-        error.response ? error.response.data : error.message
-      );
-      alert("Failed to submit the form. Please try again.");
+      toast.error("Failed to submit the form. Please try again.");
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
 
-  // Handler for radio button change
-  const handleActionChange = (event) => {
-    setActionTaken(event.target.value);
-  };
+  if (loading) {
+    return <MyLoader />;
+  }
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen bg-[#F1FBFD]">
+    <div className="relative flex items-center justify-center min-h-screen overflow-hidden bg-[#F1FBFD]">
       <div
-        className="absolute inset-0 w-full bg-no-repeat md:bg-right"
+        className="fixed md:w-[50%] md:h-[100vh] h-[300px] right-0 top-0  w-[300px] hidden md:block md:bg-contain  bg-no-repeat md:bg-right"
         style={{
           backgroundImage: `url(${backgroundImage})`,
           backgroundAttachment: "fixed",
         }}
       ></div>
+
+<img src={backgroundImage} className="md:hidden block absolute top-0 right-0 w-[300px]" alt="" />
+
       <div className="relative bg-opacity-80 p-8 mt-4 max-w-3xl w-full">
         <h1 className="text-3xl font-bold mb-2">Interview Questionnaire</h1>
         <p className="mb-14">
@@ -195,104 +187,22 @@ const Form = () => {
           />
         </div>
         <div className="mt-8">
-          <p className="mb-4 font-semibold">
-            Did the concerned department take any course of action against your
-            reported complaints?
-          </p>
-          <div className="p-4">
-            <div className="flex items-center mb-2">
-              <input
-                type="radio"
-                id="yes-action"
-                name="action"
-                value="Yes"
-                className="form-radio text-blue-600"
-                checked={actionTaken === "Yes"}
-                onChange={handleActionChange}
-              />
-              <label htmlFor="yes-action" className="ml-2">
-                Yes
-              </label>
-            </div>
-            <div className="flex items-center">
-              <input
-                type="radio"
-                id="no-action"
-                name="action"
-                value="No"
-                className="form-radio text-red-600"
-                checked={actionTaken === "No"}
-                onChange={handleActionChange}
-              />
-              <label htmlFor="no-action" className="ml-2">
-                No (Please mention the cause below)
-              </label>
-            </div>
-          </div>
-          {actionTaken === "No" && (
-            <div className="my-4">
-              <p className="mb-2">Cause:</p>
-              <textarea
-                name="cause"
-                id="cause"
-                value={cause}
-                onChange={(e) => setCause(e.target.value)}
-                className="w-[94%] h-40 resize-none border-gray-300 rounded-md"
-              ></textarea>
-            </div>
-          )}
-          <div className="my-4">
-            <p className="mb-4 font-semibold">
-              Have you collected your total compensation and this month’s salary
-              from the accounts department?
-            </p>
-            <div className="p-4">
-              <div className="flex items-center mb-2">
-                <input
-                  type="radio"
-                  id="yes-compensation"
-                  name="compensation"
-                  value="Yes"
-                  className="form-radio text-blue-600"
-                  checked={compensationCollected === "Yes"}
-                  onChange={(e) => setCompensationCollected(e.target.value)}
-                />
-                <label htmlFor="yes-compensation" className="ml-2">
-                  Yes
-                </label>
-              </div>
-              <div className="flex items-center">
-                <input
-                  type="radio"
-                  id="no-compensation"
-                  name="compensation"
-                  value="No"
-                  className="form-radio text-red-600"
-                  checked={compensationCollected === "No"}
-                  onChange={(e) => setCompensationCollected(e.target.value)}
-                />
-                <label htmlFor="no-compensation" className="ml-2">
-                  No
-                </label>
-              </div>
-            </div>
-          </div>
-          <div className="my-4">
-            <p className="mb-2">Any Remarks:</p>
-            <textarea
-              name="remarks"
-              id="remarks"
-              value={anyRemarks}
-              onChange={(e) => setAnyRemarks(e.target.value)}
-              className="w-[94%] h-40 resize-none border-gray-300 rounded-md"
-            ></textarea>
-          </div>
+          <TextAreas
+            actionTaken={actionTaken}
+            setActionTaken={setActionTaken}
+            cause={cause}
+            setCause={setCause}
+            compensationCollected={compensationCollected}
+            setCompensationCollected={setCompensationCollected}
+            anyRemarks={anyRemarks}
+            setAnyRemarks={setAnyRemarks}
+          />
           <div className="flex justify-center">
             <button
               className={`mt-8 w-1/3 py-2 px-4 font-bold text-white rounded ${
                 isFormValid
                   ? "bg-[#20264b] hover:bg-[#20264b]"
-                  : " bg-[#343D6D] cursor-not-allowed"
+                  : " bg-[#582aff25] "
               }`}
               onClick={handleSubmit}
               disabled={!isFormValid}

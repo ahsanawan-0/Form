@@ -20,12 +20,12 @@ const CandidateDetails = ({
         </label>
         <InputField
           type="text"
-          id="candidateName"
+          maxLength="25"
           name="candidateName"
           placeholder="Enter candidate name"
           value={candidateName}
           onChange={(e) => setCandidateName(e.target.value)}
-          className="w-[95%] mt-1"
+          className=" w-[100%] mt-1 shadow-md"
         />
       </div>
 
@@ -38,12 +38,13 @@ const CandidateDetails = ({
         </label>
         <InputField
           type="text"
-          id="department"
           name="department"
           placeholder="Enter department"
+          maxlength="25"
           value={department}
+          maxLength="20"
           onChange={(e) => setDepartment(e.target.value)}
-          className="md:w-[93%]  w-[94%] mt-1"
+          className=" w-[100%] mt-1 shadow-md"
         />
       </div>
 
@@ -59,9 +60,10 @@ const CandidateDetails = ({
           id="designation"
           name="designation"
           placeholder="Enter designation"
+          maxLength="50"
           value={designation}
           onChange={(e) => setDesignation(e.target.value)}
-          className="md:w-[97%] w-[94%] mt-1"
+          className=" w-[100%]  mt-1 shadow-md"
         />
       </div>
     </form>

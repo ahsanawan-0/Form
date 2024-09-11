@@ -47,6 +47,7 @@ const userSchema = new Schema({
     required: function () {
       return this.primaryReasonForLeaving === "Other (please specify below)";
     },
+    // Custom validation to allow empty string
     validate: {
       validator: function (v) {
         return (
@@ -82,6 +83,7 @@ const userSchema = new Schema({
     required: function () {
       return this.firstRadioQuestion === "No";
     },
+    // Custom validation to allow empty string
     validate: {
       validator: function (v) {
         return this.firstRadioQuestion !== "No" || v.length > 0;
